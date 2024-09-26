@@ -6,6 +6,7 @@ const QrForm: React.FC = () => {
     const [link2Value, setLink2Value] = useState<string>('');
     const [link3Value, setLink3Value] = useState<string>('');
     const [qrCodeValue, setQrCodeValue] = useState<string | null>(null);
+    const [paddingValue, setPaddingValue] = useState<boolean>(true);
 
     const inputHandlers: Record<string, React.Dispatch<React.SetStateAction<string>>> = {
         link1: setLink1Value,
@@ -20,6 +21,10 @@ const QrForm: React.FC = () => {
         if (handler) {
             handler(value); 
         }
+    }
+
+    const handlePaddingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPaddingValue(event.target.checked)
     }
 
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -42,13 +47,18 @@ const QrForm: React.FC = () => {
             <label htmlFor="link3">Link 3:</label>
             <input type="text" id="link3" value={link3Value} onChange={handleInputChange} />
 
+            <div>
+                <input type="checkbox" id="padding" name="padding" checked={paddingValue} onChange={handlePaddingChange}/>
+                <label htmlFor="padding">Include Padding</label>
+            </div>
+
             <button type="submit">Generate</button>
         </form>
 
         {qrCodeValue && (
             <div>
                 <h3>QR Code:</h3>
-                <QRCodeSVG value={qrCodeValue} />
+                <QRCodeSVG value={qrCodeValue} marginSize={paddingValue ? 4 : 0}/>
             </div>
         )}
         </>
