@@ -5,8 +5,9 @@ const QrForm: React.FC = () => {
     const [link1Value, setLink1Value] = useState<string>('');
     const [link2Value, setLink2Value] = useState<string>('');
     const [link3Value, setLink3Value] = useState<string>('');
-    const [qrCodeValue, setQrCodeValue] = useState<string | null>(null);
+    const [qrCodeValues, setQrCodeValues] = useState<string[]>([]);
     const [paddingValue, setPaddingValue] = useState<boolean>(true);
+    const [qrSize, setQrSize] = useState<string>('small');
 
     const inputHandlers: Record<string, React.Dispatch<React.SetStateAction<string>>> = {
         link1: setLink1Value,
@@ -27,11 +28,18 @@ const QrForm: React.FC = () => {
         setPaddingValue(event.target.checked)
     }
 
+    const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setQrSize(event.target.value)
+        console.log(qrSize)
+    }
+
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const combinedLinks = [link1Value, link2Value, link3Value].filter(Boolean).join('\n');
-        setQrCodeValue(combinedLinks);
+        const links = [link1Value, link2Value, link3Value]
+        const qrCodes = links.filter(Boolean)
+
+        setQrCodeValues(qrCodes)
     }
 
     return(
@@ -52,13 +60,24 @@ const QrForm: React.FC = () => {
                 <label htmlFor="padding">Include Padding</label>
             </div>
 
+            <div>
+                <input type="radio" id="sizeSmall" name="size" value="small" onChange={handleSizeChange}/>
+                <label htmlFor="sizeSmall">Small {`(Digital)`}</label>
+                <input type="radio" id="sizeLarge" name="size" value="large" onChange={handleSizeChange}/>
+                <label htmlFor="sizeLarge">Large {`(Print)`}</label>
+            </div>
+
             <button type="submit">Generate</button>
         </form>
 
-        {qrCodeValue && (
+        {qrCodeValues.length > 0 && (
             <div>
-                <h3>QR Code:</h3>
-                <QRCodeSVG value={qrCodeValue} marginSize={paddingValue ? 4 : 0}/>
+                {qrCodeValues.map((value, index) => (
+                    <div key={index}>
+                        <h3>QR Code {index + 1}</h3>
+                        <QRCodeSVG value={value} marginSize={paddingValue ? 4 : 0} size={(qrSize === 'large') ? 1000 : 300}/>
+                    </div>
+                ))}
             </div>
         )}
         </>
