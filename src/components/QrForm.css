@@ -37,6 +37,11 @@
     border-radius: 0.25rem;
 }
 
+.error-message {
+    color: #b70606;
+    font-size: 0.75rem;
+}
+
 .form-checkbox {
     margin: 1rem;
 }

@@ -9,12 +9,18 @@ const QrForm: React.FC = () => {
     const [paddingValue, setPaddingValue] = useState<boolean>(true);
     const [qrSize, setQrSize] = useState<string>('small');
     const [qrCodeValues, setQrCodeValues] = useState<string[]>([]);
+    const [errorMessage, setErrorMessage] = useState<string>('');
     const qrRefs = useRef<Array<SVGSVGElement | null>>([]);
 
     const inputHandlers: Record<string, React.Dispatch<React.SetStateAction<string>>> = {
         link1: setLink1Value,
         link2: setLink2Value,
         link3: setLink3Value,
+    }
+
+    const validateInput = (input: string): boolean => {
+        const regex = /\.\w{2,}$/;
+        return regex.test(input);
     }
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,7 +30,13 @@ const QrForm: React.FC = () => {
             handler(value); 
         }
 
-        setQrCodeValues([link1Value, link2Value, link3Value].filter(Boolean))
+        const currentQrCodeValues = [
+            id === "link1" ? value : link1Value,
+            id === "link2" ? value : link2Value,
+            id === "link3" ? value : link3Value,
+        ].filter(Boolean)
+
+        setQrCodeValues(currentQrCodeValues)
     }
 
     const handlePaddingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +49,18 @@ const QrForm: React.FC = () => {
 
     const handleSVGDownload = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        
+
+        console.log(`qrcodevalues:`, qrCodeValues)
+        const invalidLinks = qrCodeValues.filter(link => link && !validateInput(link))
+        console.log(`invalidlinks:`, invalidLinks)
+
+        if (invalidLinks.length > 0) {
+            setErrorMessage('Links must contain at least one dot and two characters after the dot')
+            return;
+        } else {
+            setErrorMessage('')
+        }
+
         const qrCodeSize = qrSize === 'large' ? 1000 : 300;
         
         qrRefs.current.forEach((svgElement, index) => {
@@ -58,8 +81,6 @@ const QrForm: React.FC = () => {
             document.body.removeChild(link)
             URL.revokeObjectURL(url)
         })
-
-        setQrCodeValues([])
     }
 
     return(
@@ -77,6 +98,8 @@ const QrForm: React.FC = () => {
 
                 <label htmlFor="link3" className="form-label">Link 3:</label>
                 <input type="text" id="link3" value={link3Value} onChange={handleInputChange} className="form-input" placeholder="https://"/>
+
+                {errorMessage && <p className="error-message">{errorMessage}</p>}
 
                 <div className="form-checkbox">
                     <input type="checkbox" id="padding" name="padding" checked={paddingValue} onChange={handlePaddingChange}/>
