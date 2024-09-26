@@ -4,7 +4,7 @@ import './App.css';
 function App() {
   return (
     <>
-      <h1>QR Code Generator</h1>
+      <h1 className="qr-heading">QR Code Generator</h1>
       <QrForm />
     </>
   );

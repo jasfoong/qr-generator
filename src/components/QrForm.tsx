@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {QRCodeSVG} from 'qrcode.react';
+import './QrForm.css'
 
 const QrForm: React.FC = () => {
     const [link1Value, setLink1Value] = useState<string>('');
@@ -30,7 +31,6 @@ const QrForm: React.FC = () => {
 
     const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setQrSize(event.target.value)
-        console.log(qrSize)
     }
 
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -44,38 +44,42 @@ const QrForm: React.FC = () => {
 
     return(
         <>
-        <form onSubmit={handleFormSubmit}>
-            <label htmlFor="link1">Link 1:</label>
-            <span>{"(required)"}</span>
-            <input type="text" id="link1" value={link1Value} onChange={handleInputChange} required />
+        <div className="form-container">
+            <form onSubmit={handleFormSubmit}>
+                <div className="form-label-input-container">
+                    <label htmlFor="link1" className="form-label">Link 1:</label>
+                    <span className="form-label-required">{"*required"}</span>
+                </div>
+                <input type="text" id="link1" value={link1Value} onChange={handleInputChange} className="form-input" required />
 
-            <label htmlFor="link2">Link 2:</label>
-            <input type="text" id="link2" value={link2Value} onChange={handleInputChange} />
+                <label htmlFor="link2" className="form-label">Link 2:</label>
+                <input type="text" id="link2" value={link2Value} onChange={handleInputChange} className="form-input"/>
 
-            <label htmlFor="link3">Link 3:</label>
-            <input type="text" id="link3" value={link3Value} onChange={handleInputChange} />
+                <label htmlFor="link3" className="form-label">Link 3:</label>
+                <input type="text" id="link3" value={link3Value} onChange={handleInputChange} className="form-input"/>
 
-            <div>
-                <input type="checkbox" id="padding" name="padding" checked={paddingValue} onChange={handlePaddingChange}/>
-                <label htmlFor="padding">Include Padding</label>
-            </div>
+                <div className="form-checkbox">
+                    <input type="checkbox" id="padding" name="padding" checked={paddingValue} onChange={handlePaddingChange}/>
+                    <label htmlFor="padding">Include Padding</label>
+                </div>
 
-            <div>
-                <input type="radio" id="sizeSmall" name="size" value="small" onChange={handleSizeChange}/>
-                <label htmlFor="sizeSmall">Small {`(Digital)`}</label>
-                <input type="radio" id="sizeLarge" name="size" value="large" onChange={handleSizeChange}/>
-                <label htmlFor="sizeLarge">Large {`(Print)`}</label>
-            </div>
+                <div className="form-radio">
+                    <input type="radio" id="sizeSmall" name="size" value="small" onChange={handleSizeChange}/>
+                    <label htmlFor="sizeSmall">Small {`(Digital)`}</label>
+                    <input type="radio" id="sizeLarge" name="size" value="large" onChange={handleSizeChange}/>
+                    <label htmlFor="sizeLarge">Large {`(Print)`}</label>
+                </div>
 
-            <button type="submit">Generate</button>
-        </form>
+                <button type="submit" className="form-button">Generate</button>
+            </form>
+        </div>
 
         {qrCodeValues.length > 0 && (
-            <div>
+            <div className="qr-code-container">
                 {qrCodeValues.map((value, index) => (
-                    <div key={index}>
+                    <div key={index} className="qr-code-item">
                         <h3>QR Code {index + 1}</h3>
-                        <QRCodeSVG value={value} marginSize={paddingValue ? 4 : 0} size={(qrSize === 'large') ? 1000 : 300}/>
+                        <QRCodeSVG value={value} marginSize={paddingValue ? 2 : 0} size={(qrSize === 'large') ? 1000 : 300}/>
                     </div>
                 ))}
             </div>
