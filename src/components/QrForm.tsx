@@ -38,13 +38,15 @@ const QrForm: React.FC = () => {
     const handleSVGDownload = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         
+        const qrCodeSize = qrSize === 'large' ? 1000 : 300;
+        
         qrRefs.current.forEach((svgElement, index) => {
             if (!svgElement) return;
 
-            const serializer = new XMLSerializer();
-            const svgString = serializer.serializeToString(svgElement)
+            const svgString = new XMLSerializer().serializeToString(svgElement)
+            const resizedSvg = svgString.replace(/width="\d+"/, `width="${qrCodeSize}"`).replace(/height="\d+"/, `height="${qrCodeSize}"`);
 
-            const blob = new Blob([svgString], {type: 'image/svg+xml'})
+            const blob = new Blob([resizedSvg], {type: 'image/svg+xml'})
             const url = URL.createObjectURL(blob)
 
             const link = document.createElement("a")
