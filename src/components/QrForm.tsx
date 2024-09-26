@@ -79,7 +79,13 @@ const QrForm: React.FC = () => {
                 {qrCodeValues.map((value, index) => (
                     <div key={index} className="qr-code-item">
                         <h3>QR Code {index + 1}</h3>
-                        <QRCodeSVG value={value} marginSize={paddingValue ? 2 : 0} size={(qrSize === 'large') ? 1000 : 300}/>
+                        <QRCodeSVG 
+                            value={value}  
+                            marginSize={paddingValue ? 2 : 0}    
+                            size={(qrSize === 'large') ? 1000 : 300}
+                            level={(qrSize === 'large') ? 'H' : 'M'}
+                        />
+                        <button></button>
                     </div>
                 ))}
             </div>
