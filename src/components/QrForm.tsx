@@ -107,13 +107,17 @@ const QrForm: React.FC = () => {
                 </div>
 
                 <div className="form-radio">
-                    <input type="radio" id="sizeSmall" name="size" value="small" onChange={handleSizeChange}/>
-                    <label htmlFor="sizeSmall">Small {`(Digital)`}</label>
-                    <input type="radio" id="sizeLarge" name="size" value="large" onChange={handleSizeChange}/>
-                    <label htmlFor="sizeLarge">Large {`(Print)`}</label>
+                    <div>
+                        <input type="radio" id="sizeSmall" name="size" value="small" onChange={handleSizeChange}/>
+                        <label htmlFor="sizeSmall">Small {`(Digital)`}</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="sizeLarge" name="size" value="large" onChange={handleSizeChange}/>
+                        <label htmlFor="sizeLarge">Large {`(Print)`}</label>
+                    </div>
                 </div>
 
-                <button type="submit" className="form-button">Download QR Code {"(SVG)"}</button>
+                <button type="submit" className="form-button">Download SVG</button>
             </form>
         
 
