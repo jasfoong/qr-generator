@@ -15,19 +15,15 @@ const QrForm: React.FC = () => {
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target
 
-        if (id === "link1") {
-            setLink1Value(value)
-        }  else if (id === "link2") {
-            setLink2Value(value)
-        } else if (id === "link3") {
-            setLink3Value(value)
-        }
+        if (id === "link1") setLink1Value(value)
+        if (id === "link2") setLink2Value(value)
+        if (id === "link3") setLink3Value(value)
 
         const currentQrCodeValues = [
             id === "link1" ? value : link1Value,
             id === "link2" ? value : link2Value,
             id === "link3" ? value : link3Value,
-        ].filter(Boolean)
+        ]
 
         setQrCodeValues(currentQrCodeValues)
     }
@@ -121,6 +117,7 @@ const QrForm: React.FC = () => {
             {qrCodeValues.length > 0 && (
                 <div className="qr-code-container">
                     {qrCodeValues.map((value, index) => (
+                        value ? (
                         <div key={index} className="qr-code-item">
                             <h3>QR Code {index + 1}</h3>
                             <QRCodeSVG 
@@ -132,6 +129,7 @@ const QrForm: React.FC = () => {
                                 className="qr-code"
                             />
                         </div>
+                        ) : null
                     ))}
                 </div>
             )}
