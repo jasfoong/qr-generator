@@ -1,6 +1,7 @@
 body {
   font-family: 'Lucida Console', monospace;
-  background: linear-gradient(to bottom, #e9f7ef, #e1efdd, #e1eddd)
+  background: linear-gradient(to bottom, #e9f7ef, #e1efdd, #e1eddd);
+  min-height: 100vh;
 }
 
 .qr-heading {

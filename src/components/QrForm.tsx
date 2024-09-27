@@ -12,22 +12,15 @@ const QrForm: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string>('');
     const qrRefs = useRef<Array<SVGSVGElement | null>>([]);
 
-    const inputHandlers: Record<string, React.Dispatch<React.SetStateAction<string>>> = {
-        link1: setLink1Value,
-        link2: setLink2Value,
-        link3: setLink3Value,
-    }
-
-    const validateInput = (input: string): boolean => {
-        const regex = /\.\w{2,}$/;
-        return regex.test(input);
-    }
-
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target
-        const handler = inputHandlers[id]
-        if (handler) {
-            handler(value); 
+
+        if (id === "link1") {
+            setLink1Value(value)
+        }  else if (id === "link2") {
+            setLink2Value(value)
+        } else if (id === "link3") {
+            setLink3Value(value)
         }
 
         const currentQrCodeValues = [
@@ -37,6 +30,11 @@ const QrForm: React.FC = () => {
         ].filter(Boolean)
 
         setQrCodeValues(currentQrCodeValues)
+    }
+
+    const validateInput = (input: string): boolean => {
+        const regex = /\.\w{2,}$/;
+        return regex.test(input);
     }
 
     const handlePaddingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,9 +48,7 @@ const QrForm: React.FC = () => {
     const handleSVGDownload = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        console.log(`qrcodevalues:`, qrCodeValues)
         const invalidLinks = qrCodeValues.filter(link => link && !validateInput(link))
-        console.log(`invalidlinks:`, invalidLinks)
 
         if (invalidLinks.length > 0) {
             setErrorMessage('Links must contain at least one dot and two characters after the dot')
@@ -107,6 +103,7 @@ const QrForm: React.FC = () => {
                 </div>
 
                 <div className="form-radio">
+                    <h3 className="form-radio-subheading">Select a size</h3>
                     <div>
                         <input type="radio" id="sizeSmall" name="size" value="small" onChange={handleSizeChange}/>
                         <label htmlFor="sizeSmall">Small {`(Digital)`}</label>
