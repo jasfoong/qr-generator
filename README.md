@@ -20,13 +20,13 @@ This project is a QR code generator that takes an array of strings as input and 
 
 ## Installation
 
-Follow these steps to get the client up and running:
+Follow these steps to get the app up and running:
 
 **Clone the repository and enter the project directory**
   ```
-  git clone https://github.com/jasfoong/qr-generator
+    git clone https://github.com/jasfoong/qr-generator
 
-  cd qr-generator
+    cd qr-generator
   ```
 
 **Install dependencies**
@@ -40,7 +40,7 @@ Follow these steps to get the client up and running:
   ```
 
 **Open the app in your browser at**
-```
+  ```
     http://localhost:3000
   ```
 
